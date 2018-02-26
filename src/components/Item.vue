@@ -32,8 +32,11 @@
           this.isShow = false
         }
       },
-      deleteItem(index){
-        this.deleteTodo(index)
+      deleteItem(){
+        const {todo, index, deleteTodo} = this
+        if(window.confirm(`确定要删除${todo.title}吗？`)){
+          this.deleteTodo(index)
+        }
       }
     }
   }
