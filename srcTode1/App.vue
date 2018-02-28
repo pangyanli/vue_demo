@@ -1,4 +1,4 @@
-<!-- 全部使用props传递数据的todo版本，进一步优化数据在本地的存储localStorage -->
+<!-- 全部使用props传递数据的todo版本 -->
 <template>
   <div class="todo-container">
     <div class="todo-wrap">
@@ -13,8 +13,6 @@
   import Header from './components/Header.vue'
   import Main from './components/Main.vue'
   import Footer from './components/Footer.vue'
-  import localStorageUtil from './utils/localStorageUtil'
-
   export default{
     data(){
      /* return {
@@ -27,9 +25,7 @@
      // 利用本地缓存存储数据，当刷新或者关闭浏览器再打开时，还能看到原来的数据
      return {
        // 从本地缓存localStorage中获取数据，如果没有就显示空数组，注意是字符串
-     //  todos: JSON.parse(window.localStorage.getItem('todos_key') || '[]')
-       // 从localStorage中读取保存todos数据
-       todos: localStorageUtil.readTodos()
+       todos: JSON.parse(window.localStorage.getItem('todo_key') || '[]')
      }
     },
     methods:{
@@ -56,11 +52,10 @@
     watch: {
       todos:{
         deep: true, // 深度监视
-     /*   handler: function(newValue){ // newValue是最新的todos
+        handler: function(newValue){ // newValue是最新的todos
           // 将todos保存到localStorage (注意todos是JSON格式的数据)
           window.localStorage.setItem('todo_key',JSON.stringify(newValue))
-        }*/
-        handler: localStorageUtil.saveTodos
+        }
       }
     },
     components: {  // 将组件映射成标签，因为Header这些都是关键字，所以不要直接使用
