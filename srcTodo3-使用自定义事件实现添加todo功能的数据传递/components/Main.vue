@@ -1,10 +1,7 @@
 <template>
   <ul class="todo-main">
-    <!--<Item v-for="(todo, index) in todos" :key="index" :todo="todo"-->
-    <!--:index="index" :deleteTodo="deleteTodo" />-->
-    <!-- 使用pubsub实现通信 deleteTodo="deleteTodo" -->
     <Item v-for="(todo, index) in todos" :key="index" :todo="todo"
-          :index="index" />
+    :index="index" :deleteTodo="deleteTodo"/>
   </ul>
 </template>
 
@@ -13,7 +10,7 @@
   export default{
     props: {
       todos: Array,
-//      deleteTodo: Function
+      deleteTodo: Function
     },
     components: {
       Item

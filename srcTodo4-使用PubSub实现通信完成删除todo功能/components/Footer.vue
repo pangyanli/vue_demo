@@ -1,27 +1,23 @@
 <template>
   <div class="todo-footer">
     <label>
-      <!--<input type="checkbox" v-model="allCompleted"/>-->
-      <!-- 声明使用插槽分发内容slot实现通信，并占位 -->
-      <slot name="selectAll">如果没有其他组件传递内容过来，该文本就会被显示，所以可以不写</slot>
+      <input type="checkbox" v-model="allCompleted"/>
     </label>
     <span>
-          <!--<span>已完成{{completedCount}}/ 全部 {{todos.length}}</span> -->
-      <slot name="count"></slot>
+          <span>已完成{{completedCount}}</span> / 全部 {{todos.length}}
     </span>
-    <!--<button class="btn btn-danger" v-show="completedCount>0" @click="clearTodo">清除已完成任务</button>-->
-    <slot name="deleteCompleted"></slot>
+    <button class="btn btn-danger" v-show="completedCount>0" @click="clearTodo">清除已完成任务</button>
   </div>
 </template>
 
 <script>
   export default{
-/*    props: {
+    props: {
       todos: Array,
       selectAll: Function,
       deleteCompleted: Function
-    },*/
-    /*computed: {
+    },
+    computed: {
       //3、已完成事项 ，计算闭关返回一个结果
       completedCount(){
         return this.todos.reduce((preTodo, todo) => preTodo + (todo.completed ? 1 : 0 ),0)
@@ -36,14 +32,14 @@
           this.selectAll(value)
        }
       }
-    },*/
-   /* methods: {
+    },
+    methods: {
       clearTodo(){
         if(window.confirm(`确定要清除选已完成的todo吗？`)){
           this.deleteCompleted()
         }
       }
-    }*/
+    }
   }
 </script>
 

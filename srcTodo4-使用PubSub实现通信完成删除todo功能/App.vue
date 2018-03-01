@@ -1,6 +1,5 @@
 <!--
   1、全部使用props传递数据的todo版本，进一步优化数据在本地的存储localStorage
-    vue组件之间的通信方式有5种：props/自定义事件/pubsub（消息订阅与发布）/slot/vuex
   2、使用自定义事件实现添加todo的功能，实现子组件给父组件传递数据，自定义事件绑定有两种方式：
     （1）父组件给子组件标签：通过v-on绑定，如: v-on:addTodo='addTodo'/ @addTodo = 'addTodo'
     （2）父组件调用$on('事件名',callback）方法，注意在绑定事件时必须在mounted中绑定，不能在
@@ -13,10 +12,6 @@
     子组件：发布消息，相当于触发事件，PubSub.publish('消息名'，data)
     注意：使用pubsub对组件/组件与组件之间的通信没有要求，使用时要下载PubSub第三库
       npm install pubsub-js --save ，然后在当前组件内引入，才能使用
-  4、使用插槽发布内容（slot）方法实现父组件传递给子组件，对Item和App进行修改
-    子组件：声明使用插槽占位，如：<slot name="count"></slot>，传过来什么就显示什么
-    父组件：给子组件传递带数据的标签，插入到占位，注意标识名要一样
-     <span slot="count">已完成{{completedCount}}/ 全部 {{todos.length}}</span>
  -->
 <template>
   <div class="todo-container">
@@ -29,13 +24,7 @@
       <!--<todoMain :todos="todos" :deleteTodo="deleteTodo"/>-->
       <!-- 使用pubsub订阅消息，完成App与Item之间的通信，实现删除todo的功能 -->
       <todoMain :todos="todos"/>
-      <!-- 使用slot查曹操分发内容的方式给子组件传递带数据的标签 -->
-      <todoFooter :todos="todos" :selectAll="selectAll" :deleteCompleted="deleteCompleted">
-        <input type="checkbox" v-model="allCompleted" slot="selectAll"/>
-        <span slot="count">已完成{{completedCount}}/ 全部 {{todos.length}}</span>
-        <button class="btn btn-danger" v-show="completedCount>0"
-                @click="deleteCompleted" slot="deleteCompleted">清除已完成任务</button>
-      </todoFooter>
+      <todoFooter :todos="todos" :selectAll="selectAll" :deleteCompleted="deleteCompleted"/>
     </div>
   </div>
 </template>
@@ -78,22 +67,7 @@
         this.deleteTodo(index)
       })
     },
-    computed: {
-      //3、已完成事项 ，计算闭关返回一个结果
-      completedCount(){
-        return this.todos.reduce((preTodo, todo) => preTodo + (todo.completed ? 1 : 0 ),0)
-      },
-      // 是否全选或全不选
-      allCompleted:{  // allCompleted 是boolean值
-        get(){
-          return this.completedCount === this.todos.length && this.todos.length > 0
-        },
-        set(value){ // value 是boolean类型
-          // 对所有todos进行全选或者全不选
-          this.selectAll(value)
-        }
-      }
-    },
+
     methods:{
       // 1、添加todo事项回调函数
       addTodo(todo){
@@ -110,10 +84,8 @@
       },
       // 4、删除已完成的todo事项
       deleteCompleted(){
-        if(window.confirm(`确定要清除选已完成的todo吗？`)){
-          // 过滤产生新的数组并更新
-          this.todos = this.todos.filter(todo => !todo.completed)
-        }
+        // 过滤产生新的数组并更新
+        this.todos = this.todos.filter(todo => !todo.completed)
       }
     },
     // 实现利用localStorage本地缓存数据，必须要深度监视数据
